@@ -117,7 +117,7 @@ class PDFKit
 
       options.each do |key, value|
         next if !value
-        normalized_key = "--#{normalize_arg key}"
+        normalized_key = if ["cover","toc"].include?("key") then "#{normalize_arg key}" else "--#{normalize_arg key}" end
         normalized_options[normalized_key] = normalize_value(value)
       end
       normalized_options
