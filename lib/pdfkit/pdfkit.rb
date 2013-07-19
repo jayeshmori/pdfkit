@@ -34,7 +34,6 @@ class PDFKit
   def command(path = nil)
     args = [executable]
     args += @options.to_a.flatten.compact
-    args << '--quiet'
 
     if @source.html?
       args << '-' # Get HTML from stdin
@@ -59,7 +58,6 @@ class PDFKit
 
   def to_pdf(path=nil)
     append_stylesheets
-
     invoke = command(path)
 
     result = IO.popen(invoke, "wb+") do |pdf|
@@ -117,7 +115,7 @@ class PDFKit
 
       options.each do |key, value|
         next if !value
-        normalized_key = if ["cover","toc"].include?("key") then "#{normalize_arg key}" else "--#{normalize_arg key}" end
+        normalized_key = key.to_s == "cover" ? "cover" : "--#{normalize_arg key}"
         normalized_options[normalized_key] = normalize_value(value)
       end
       normalized_options
